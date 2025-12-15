@@ -29,12 +29,38 @@ public class StudentController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllStudents() {
         try {
+            System.out.println("🔍 [StudentController] Appel de getAllStudents()");
             List<Student> students = dao.getAllStudent();
+            System.out.println("📊 [StudentController] Nombre d'étudiants récupérés: " + students.size());
+
+            if (students.isEmpty()) {
+                System.out.println("⚠️ [StudentController] ATTENTION: La liste est vide!");
+            } else {
+                System.out.println("✅ [StudentController] Premier étudiant: " + students.get(0));
+            }
+
             return Response.ok(students).build();
         } catch (Exception e) {
+            System.err.println("❌ [StudentController] Erreur: " + e.getMessage());
+            e.printStackTrace();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("{\"error\": \"" + e.getMessage() + "\"}").build();
         }
+    }
+
+    /**
+     * GET /students/debug-test - Endpoint de test
+     * 
+     * @return Un étudiant de test
+     */
+    @GET
+    @Path("/debug-test")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response testEndpoint() {
+        System.out.println("🧪 [StudentController] Test endpoint appelé");
+        Student testStudent = new Student(999, "Test", "User", java.sql.Date.valueOf("2000-01-01"));
+        System.out.println("📤 [StudentController] Retour de: " + testStudent);
+        return Response.ok(testStudent).build();
     }
 
     /**

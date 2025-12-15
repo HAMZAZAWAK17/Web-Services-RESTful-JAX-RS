@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang='fr'>
+
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Test API Students</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border: 1px solid #ddd;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            background: #f9f9f9;
+        }
+
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background: white;
+            white-space: pre-wrap;
+            font-family: monospace;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+        }
+
+        .error {
+            color: red;
+        }
+
+        .success {
+            color: green;
+        }
+    </style>
+</head>
+
+<body>
+    <div class='container'>
+        <h1>🔍 Test API Students</h1>
+
+        <div class='test-section'>
+            <h2>Test 1: Récupérer tous les étudiants</h2>
+            <button class='btn' onclick='testGetAll()'>Tester GET /students</button>
+            <div id='result1' class='result'></div>
+        </div>
+
+        <div class='test-section'>
+            <h2>Test 2: Récupérer un étudiant par ID</h2>
+            <input type='number' id='studentId' placeholder='ID étudiant' value='1'>
+            <button class='btn' onclick='testGetById()'>Tester GET /students/{id}</button>
+            <div id='result2' class='result'></div>
+        </div>
+
+        <div class='test-section'>
+            <h2>Test 3: Ajouter un étudiant</h2>
+            <input type='text' id='firstName' placeholder='Prénom' value='Test'>
+            <input type='text' id='lastName' placeholder='Nom' value='User'>
+            <input type='date' id='birthDate' value='2000-01-01'>
+            <button class='btn' onclick='testAdd()'>Tester POST /students</button>
+            <div id='result3' class='result'></div>
+        </div>
+
+        <div class='test-section'>
+            <h2>Informations de Débogage</h2>
+            <div id='debug' class='result'></div>
+        </div>
+
+        <a href='index.html' class='btn' style='text-decoration: none; display: inline-block; margin-top: 20px;'>←
+            Retour</a>
+    </div>
+
+    <script>
+        // Afficher les informations de débogage
+        const debug = document.getElementById('debug');
+        debug.innerHTML = `
+URL actuelle: ${window.location.href}
+Base URL: ${window.location.origin}
+Pathname: ${window.location.pathname}
+Context: ${window.location.pathname.split('/')[1]}
+
+URL API attendue: ${window.location.origin}/${window.location.pathname.split('/')[1]}/students
+        `;
+
+        function testGetAll() {
+            const result = document.getElementById('result1');
+            result.innerHTML = '⏳ Chargement...';
+
+            const url = 'students';
+            console.log('Testing URL:', url);
+
+            fetch(url)
+                .then(response => {
+                    console.log('Response status:', response.status);
+                    console.log('Response headers:', response.headers);
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Data received:', data);
+                    result.innerHTML = `<span class='success'>✅ Succès!</span>\n\n`;
+                    result.innerHTML += `Nombre d'étudiants: ${data.length}\n\n`;
+                    result.innerHTML += JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    result.innerHTML = `<span class='error'>❌ Erreur:</span>\n${error.message}\n\n`;
+                    result.innerHTML += `URL testée: ${url}`;
+                });
+        }
+
+        function testGetById() {
+            const result = document.getElementById('result2');
+            const id = document.getElementById('studentId').value;
+            result.innerHTML = '⏳ Chargement...';
+
+            const url = `students/${id}`;
+            console.log('Testing URL:', url);
+
+            fetch(url)
+                .then(response => {
+                    console.log('Response status:', response.status);
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Data received:', data);
+                    result.innerHTML = `<span class='success'>✅ Succès!</span>\n\n`;
+                    result.innerHTML += JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    result.innerHTML = `<span class='error'>❌ Erreur:</span>\n${error.message}\n\n`;
+                    result.innerHTML += `URL testée: ${url}`;
+                });
+        }
+
+        function testAdd() {
+            const result = document.getElementById('result3');
+            result.innerHTML = '⏳ Envoi...';
+
+            const formData = new URLSearchParams();
+            formData.append('firstName', document.getElementById('firstName').value);
+            formData.append('lastName', document.getElementById('lastName').value);
+            formData.append('birthDate', document.getElementById('birthDate').value);
+
+            const url = 'students';
+            console.log('Testing URL:', url);
+            console.log('Form data:', formData.toString());
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: formData
+            })
+                .then(response => {
+                    console.log('Response status:', response.status);
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Data received:', data);
+                    result.innerHTML = `<span class='success'>✅ Succès!</span>\n\n`;
+                    result.innerHTML += JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    result.innerHTML = `<span class='error'>❌ Erreur:</span>\n${error.message}\n\n`;
+                    result.innerHTML += `URL testée: ${url}`;
+                });
+        }
+
+        // Tester automatiquement au chargement
+        window.onload = function () {
+            console.log('Page de test chargée');
+            console.log('URL de base:', window.location.href);
+        };
+    </script>
+</body>
+
+</html>

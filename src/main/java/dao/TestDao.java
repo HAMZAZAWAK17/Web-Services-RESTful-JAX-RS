@@ -46,8 +46,8 @@ public class TestDao {
         System.out.println("✏️ Test 4: Mise à jour d'un étudiant (ID=1)");
         System.out.println("----------------------------------------------");
         if (student != null) {
-            student.setFirstNameStudent("UPDATED_FIRST_NAME");
-            student.setLastNameStudent("UPDATED_LAST_NAME");
+            student.setFirstName("UPDATED_FIRST_NAME");
+            student.setLastName("UPDATED_LAST_NAME");
             dao.updateStudent(1, student);
         }
         System.out.println();

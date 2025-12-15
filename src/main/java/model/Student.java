@@ -8,9 +8,9 @@ import java.sql.Date;
 public class Student {
 
     private int idStudent;
-    private String firstNameStudent;
-    private String lastNameStudent;
-    private Date dateBirthStudent;
+    private String firstName;
+    private String lastName;
+    private Date birthDate;
 
     /**
      * Constructeur par défaut
@@ -22,22 +22,22 @@ public class Student {
     /**
      * Constructeur avec paramètres (sans ID)
      */
-    public Student(String firstNameStudent, String lastNameStudent, Date dateBirthStudent) {
+    public Student(String firstName, String lastName, Date birthDate) {
         super();
-        this.firstNameStudent = firstNameStudent;
-        this.lastNameStudent = lastNameStudent;
-        this.dateBirthStudent = dateBirthStudent;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
     }
 
     /**
      * Constructeur avec tous les paramètres
      */
-    public Student(int idStudent, String firstNameStudent, String lastNameStudent, Date dateBirthStudent) {
+    public Student(int idStudent, String firstName, String lastName, Date birthDate) {
         super();
         this.idStudent = idStudent;
-        this.firstNameStudent = firstNameStudent;
-        this.lastNameStudent = lastNameStudent;
-        this.dateBirthStudent = dateBirthStudent;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
     }
 
     // Getters et Setters
@@ -50,35 +50,35 @@ public class Student {
         this.idStudent = idStudent;
     }
 
-    public String getFirstNameStudent() {
-        return firstNameStudent;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirstNameStudent(String firstNameStudent) {
-        this.firstNameStudent = firstNameStudent;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getLastNameStudent() {
-        return lastNameStudent;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLastNameStudent(String lastNameStudent) {
-        this.lastNameStudent = lastNameStudent;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public Date getDateBirthStudent() {
-        return dateBirthStudent;
+    public Date getBirthDate() {
+        return birthDate;
     }
 
-    public void setDateBirthStudent(Date dateBirthStudent) {
-        this.dateBirthStudent = dateBirthStudent;
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 
     @Override
     public String toString() {
         return "Student [idStudent=" + idStudent +
-                ", firstNameStudent=" + firstNameStudent +
-                ", lastNameStudent=" + lastNameStudent +
-                ", dateBirthStudent=" + dateBirthStudent + "]";
+                ", firstName=" + firstName +
+                ", lastName=" + lastName +
+                ", birthDate=" + birthDate + "]";
     }
 }

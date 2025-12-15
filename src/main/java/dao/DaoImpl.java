@@ -34,12 +34,12 @@ public class DaoImpl implements IDao {
         try (Connection connection = getConnection();
                 PreparedStatement ps = connection.prepareStatement(sql)) {
 
-            ps.setString(1, s.getFirstNameStudent());
-            ps.setString(2, s.getLastNameStudent());
-            ps.setDate(3, s.getDateBirthStudent());
+            ps.setString(1, s.getFirstName());
+            ps.setString(2, s.getLastName());
+            ps.setDate(3, s.getBirthDate());
             ps.executeUpdate();
 
-            System.out.println("✅ Étudiant ajouté avec succès: " + s.getFirstNameStudent());
+            System.out.println("✅ Étudiant ajouté avec succès: " + s.getFirstName());
 
         } catch (Exception e) {
             System.err.println("❌ Erreur lors de l'ajout de l'étudiant: " + e.getMessage());
@@ -61,9 +61,9 @@ public class DaoImpl implements IDao {
             if (rs.next()) {
                 student = new Student();
                 student.setIdStudent(rs.getInt("ID_STUDENT"));
-                student.setFirstNameStudent(rs.getString("FIRST_NAME_STUDENT"));
-                student.setLastNameStudent(rs.getString("LAST_NAME_STUDENT"));
-                student.setDateBirthStudent(rs.getDate("DATE_BIRTH_STUDENT"));
+                student.setFirstName(rs.getString("FIRST_NAME_STUDENT"));
+                student.setLastName(rs.getString("LAST_NAME_STUDENT"));
+                student.setBirthDate(rs.getDate("DATE_BIRTH_STUDENT"));
             }
 
             rs.close();
@@ -81,26 +81,40 @@ public class DaoImpl implements IDao {
         String sql = "SELECT * FROM STUDENTS ORDER BY ID_STUDENT";
         List<Student> students = new ArrayList<>();
 
+        System.out.println("🔍 [DaoImpl] Début de getAllStudent()");
+        System.out.println("📝 [DaoImpl] SQL: " + sql);
+
         try (Connection connection = getConnection();
                 PreparedStatement ps = connection.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery()) {
 
+            System.out.println("✅ [DaoImpl] Connexion établie et requête exécutée");
+
+            int count = 0;
             while (rs.next()) {
+                count++;
                 Student student = new Student();
                 student.setIdStudent(rs.getInt("ID_STUDENT"));
-                student.setFirstNameStudent(rs.getString("FIRST_NAME_STUDENT"));
-                student.setLastNameStudent(rs.getString("LAST_NAME_STUDENT"));
-                student.setDateBirthStudent(rs.getDate("DATE_BIRTH_STUDENT"));
+                student.setFirstName(rs.getString("FIRST_NAME_STUDENT"));
+                student.setLastName(rs.getString("LAST_NAME_STUDENT"));
+                student.setBirthDate(rs.getDate("DATE_BIRTH_STUDENT"));
                 students.add(student);
+
+                if (count == 1) {
+                    System.out.println("👤 [DaoImpl] Premier étudiant: " + student);
+                }
             }
 
-            System.out.println("✅ " + students.size() + " étudiant(s) récupéré(s)");
+            System.out.println("✅ [DaoImpl] " + students.size() + " étudiant(s) récupéré(s)");
 
         } catch (Exception e) {
-            System.err.println("❌ Erreur lors de la récupération des étudiants: " + e.getMessage());
+            System.err.println("❌ [DaoImpl] ERREUR lors de la récupération des étudiants:");
+            System.err.println("   Message: " + e.getMessage());
+            System.err.println("   Type: " + e.getClass().getName());
             e.printStackTrace();
         }
 
+        System.out.println("🏁 [DaoImpl] Fin de getAllStudent() - Retour de " + students.size() + " étudiants");
         return students;
     }
 
@@ -133,9 +147,9 @@ public class DaoImpl implements IDao {
         try (Connection connection = getConnection();
                 PreparedStatement ps = connection.prepareStatement(sql)) {
 
-            ps.setString(1, s.getFirstNameStudent());
-            ps.setString(2, s.getLastNameStudent());
-            ps.setDate(3, s.getDateBirthStudent());
+            ps.setString(1, s.getFirstName());
+            ps.setString(2, s.getLastName());
+            ps.setDate(3, s.getBirthDate());
             ps.setInt(4, id);
 
             int rowsAffected = ps.executeUpdate();
