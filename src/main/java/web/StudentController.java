@@ -152,102 +152,241 @@ public class StudentController {
                 "    <meta name='viewport' content='width=device-width, initial-scale=1.0'>" +
                 "    <title>Gestion des Étudiants</title>" +
                 "    <style>" +
-                "        * { margin: 0; padding: 0; box-sizing: border-box; }" +
                 "        body {" +
-                "            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;" +
-                "            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);" +
-                "            min-height: 100vh;" +
+                "            font-family: Arial, sans-serif;" +
+                "            background: #f5f5f5;" +
                 "            padding: 20px;" +
                 "        }" +
                 "        .container {" +
-                "            max-width: 1200px;" +
+                "            max-width: 900px;" +
                 "            margin: 0 auto;" +
                 "            background: white;" +
-                "            padding: 40px;" +
-                "            border-radius: 20px;" +
-                "            box-shadow: 0 20px 60px rgba(0,0,0,0.3);" +
+                "            padding: 30px;" +
+                "            border: 1px solid #ddd;" +
                 "        }" +
                 "        h1 {" +
-                "            color: #667eea;" +
-                "            margin-bottom: 30px;" +
-                "            text-align: center;" +
+                "            color: #333;" +
+                "            font-size: 24px;" +
+                "            margin-bottom: 20px;" +
                 "        }" +
-                "        .api-info {" +
-                "            background: #f5f7fa;" +
-                "            padding: 20px;" +
-                "            border-radius: 10px;" +
-                "            margin-bottom: 30px;" +
+                "        h2 {" +
+                "            color: #555;" +
+                "            font-size: 18px;" +
+                "            margin-top: 30px;" +
+                "            margin-bottom: 15px;" +
                 "        }" +
-                "        .endpoint {" +
-                "            margin: 15px 0;" +
-                "            padding: 15px;" +
-                "            background: white;" +
-                "            border-left: 4px solid #667eea;" +
-                "            border-radius: 5px;" +
+                "        table {" +
+                "            width: 100%;" +
+                "            border-collapse: collapse;" +
+                "            margin-bottom: 20px;" +
                 "        }" +
-                "        .method {" +
-                "            display: inline-block;" +
-                "            padding: 5px 10px;" +
-                "            border-radius: 5px;" +
-                "            color: white;" +
-                "            font-weight: bold;" +
-                "            margin-right: 10px;" +
+                "        th, td {" +
+                "            border: 1px solid #ddd;" +
+                "            padding: 10px;" +
+                "            text-align: left;" +
                 "        }" +
-                "        .get { background: #28a745; }" +
-                "        .post { background: #007bff; }" +
-                "        .put { background: #ffc107; }" +
-                "        .delete { background: #dc3545; }" +
-                "        code {" +
-                "            background: #f4f4f4;" +
-                "            padding: 2px 6px;" +
-                "            border-radius: 3px;" +
-                "            font-family: 'Courier New', monospace;" +
+                "        th {" +
+                "            background: #f0f0f0;" +
+                "        }" +
+                "        .form-group {" +
+                "            margin-bottom: 15px;" +
+                "        }" +
+                "        label {" +
+                "            display: block;" +
+                "            margin-bottom: 5px;" +
+                "            color: #333;" +
+                "        }" +
+                "        input {" +
+                "            width: 100%;" +
+                "            padding: 8px;" +
+                "            border: 1px solid #ddd;" +
+                "            box-sizing: border-box;" +
                 "        }" +
                 "        .btn {" +
-                "            display: inline-block;" +
                 "            padding: 10px 20px;" +
-                "            background: #667eea;" +
+                "            background: #007bff;" +
                 "            color: white;" +
+                "            border: none;" +
+                "            cursor: pointer;" +
+                "            margin-right: 5px;" +
+                "        }" +
+                "        .btn:hover {" +
+                "            background: #0056b3;" +
+                "        }" +
+                "        .btn-delete {" +
+                "            background: #dc3545;" +
+                "        }" +
+                "        .btn-delete:hover {" +
+                "            background: #c82333;" +
+                "        }" +
+                "        .btn-edit {" +
+                "            background: #28a745;" +
+                "        }" +
+                "        .btn-edit:hover {" +
+                "            background: #218838;" +
+                "        }" +
+                "        .btn-back {" +
+                "            background: #6c757d;" +
+                "            display: inline-block;" +
                 "            text-decoration: none;" +
-                "            border-radius: 5px;" +
                 "            margin-top: 20px;" +
                 "        }" +
-                "        .btn:hover { background: #764ba2; }" +
+                "        .btn-back:hover {" +
+                "            background: #5a6268;" +
+                "        }" +
+                "        .message {" +
+                "            padding: 10px;" +
+                "            margin-bottom: 15px;" +
+                "            border-radius: 3px;" +
+                "        }" +
+                "        .success {" +
+                "            background: #d4edda;" +
+                "            color: #155724;" +
+                "            border: 1px solid #c3e6cb;" +
+                "        }" +
+                "        .error {" +
+                "            background: #f8d7da;" +
+                "            color: #721c24;" +
+                "            border: 1px solid #f5c6cb;" +
+                "        }" +
                 "    </style>" +
                 "</head>" +
                 "<body>" +
                 "    <div class='container'>" +
-                "        <h1>📚 API Gestion des Étudiants</h1>" +
-                "        <div class='api-info'>" +
-                "            <h2>Endpoints Disponibles</h2>" +
-                "            <div class='endpoint'>" +
-                "                <span class='method get'>GET</span>" +
-                "                <code>/students</code>" +
-                "                <p>Récupérer tous les étudiants</p>" +
+                "        <h1>Gestion des Étudiants</h1>" +
+                "        <div id='message'></div>" +
+                "" +
+                "        <h2>Liste des Étudiants</h2>" +
+                "        <table id='studentsTable'>" +
+                "            <thead>" +
+                "                <tr>" +
+                "                    <th>ID</th>" +
+                "                    <th>Prénom</th>" +
+                "                    <th>Nom</th>" +
+                "                    <th>Date de Naissance</th>" +
+                "                    <th>Actions</th>" +
+                "                </tr>" +
+                "            </thead>" +
+                "            <tbody id='studentsBody'>" +
+                "            </tbody>" +
+                "        </table>" +
+                "" +
+                "        <h2 id='formTitle'>Ajouter un Étudiant</h2>" +
+                "        <form id='studentForm'>" +
+                "            <input type='hidden' id='studentId' value=''>" +
+                "            <div class='form-group'>" +
+                "                <label>Prénom:</label>" +
+                "                <input type='text' id='firstName' required>" +
                 "            </div>" +
-                "            <div class='endpoint'>" +
-                "                <span class='method get'>GET</span>" +
-                "                <code>/students/{id}</code>" +
-                "                <p>Récupérer un étudiant par ID</p>" +
+                "            <div class='form-group'>" +
+                "                <label>Nom:</label>" +
+                "                <input type='text' id='lastName' required>" +
                 "            </div>" +
-                "            <div class='endpoint'>" +
-                "                <span class='method post'>POST</span>" +
-                "                <code>/students</code>" +
-                "                <p>Ajouter un nouvel étudiant (firstName, lastName, birthDate)</p>" +
+                "            <div class='form-group'>" +
+                "                <label>Date de Naissance:</label>" +
+                "                <input type='date' id='birthDate' required>" +
                 "            </div>" +
-                "            <div class='endpoint'>" +
-                "                <span class='method put'>PUT</span>" +
-                "                <code>/students/{id}</code>" +
-                "                <p>Mettre à jour un étudiant</p>" +
-                "            </div>" +
-                "            <div class='endpoint'>" +
-                "                <span class='method delete'>DELETE</span>" +
-                "                <code>/students/{id}</code>" +
-                "                <p>Supprimer un étudiant</p>" +
-                "            </div>" +
-                "        </div>" +
-                "        <a href='/' class='btn'>← Retour à l'accueil</a>" +
+                "            <button type='submit' class='btn'>Enregistrer</button>" +
+                "            <button type='button' class='btn btn-back' onclick='resetForm()'>Annuler</button>" +
+                "        </form>" +
+                "" +
+                "        <a href='/' class='btn btn-back'>← Retour à l'accueil</a>" +
                 "    </div>" +
+                "" +
+                "    <script>" +
+                "        function loadStudents() {" +
+                "            fetch('/students')" +
+                "                .then(response => response.json())" +
+                "                .then(students => {" +
+                "                    const tbody = document.getElementById('studentsBody');" +
+                "                    tbody.innerHTML = '';" +
+                "                    students.forEach(student => {" +
+                "                        const tr = document.createElement('tr');" +
+                "                        tr.innerHTML = `" +
+                "                            <td>${student.idStudent}</td>" +
+                "                            <td>${student.firstName}</td>" +
+                "                            <td>${student.lastName}</td>" +
+                "                            <td>${student.birthDate}</td>" +
+                "                            <td>" +
+                "                                <button class='btn btn-edit' onclick='editStudent(${student.idStudent})'>Modifier</button>"
+                +
+                "                                <button class='btn btn-delete' onclick='deleteStudent(${student.idStudent})'>Supprimer</button>"
+                +
+                "                            </td>" +
+                "                        `;" +
+                "                        tbody.appendChild(tr);" +
+                "                    });" +
+                "                })" +
+                "                .catch(error => showMessage('Erreur lors du chargement: ' + error, 'error'));" +
+                "        }" +
+                "" +
+                "        function showMessage(msg, type) {" +
+                "            const messageDiv = document.getElementById('message');" +
+                "            messageDiv.className = 'message ' + type;" +
+                "            messageDiv.textContent = msg;" +
+                "            setTimeout(() => messageDiv.innerHTML = '', 3000);" +
+                "        }" +
+                "" +
+                "        function resetForm() {" +
+                "            document.getElementById('studentForm').reset();" +
+                "            document.getElementById('studentId').value = '';" +
+                "            document.getElementById('formTitle').textContent = 'Ajouter un Étudiant';" +
+                "        }" +
+                "" +
+                "        function editStudent(id) {" +
+                "            fetch('/students/' + id)" +
+                "                .then(response => response.json())" +
+                "                .then(student => {" +
+                "                    document.getElementById('studentId').value = student.idStudent;" +
+                "                    document.getElementById('firstName').value = student.firstName;" +
+                "                    document.getElementById('lastName').value = student.lastName;" +
+                "                    document.getElementById('birthDate').value = student.birthDate;" +
+                "                    document.getElementById('formTitle').textContent = 'Modifier un Étudiant';" +
+                "                    window.scrollTo(0, document.getElementById('studentForm').offsetTop);" +
+                "                })" +
+                "                .catch(error => showMessage('Erreur: ' + error, 'error'));" +
+                "        }" +
+                "" +
+                "        function deleteStudent(id) {" +
+                "            if (confirm('Êtes-vous sûr de vouloir supprimer cet étudiant ?')) {" +
+                "                fetch('/students/' + id, { method: 'DELETE' })" +
+                "                    .then(response => response.json())" +
+                "                    .then(data => {" +
+                "                        showMessage('Étudiant supprimé avec succès', 'success');" +
+                "                        loadStudents();" +
+                "                    })" +
+                "                    .catch(error => showMessage('Erreur: ' + error, 'error'));" +
+                "            }" +
+                "        }" +
+                "" +
+                "        document.getElementById('studentForm').addEventListener('submit', function(e) {" +
+                "            e.preventDefault();" +
+                "            const id = document.getElementById('studentId').value;" +
+                "            const formData = new URLSearchParams();" +
+                "            formData.append('firstName', document.getElementById('firstName').value);" +
+                "            formData.append('lastName', document.getElementById('lastName').value);" +
+                "            formData.append('birthDate', document.getElementById('birthDate').value);" +
+                "" +
+                "            const url = id ? '/students/' + id : '/students';" +
+                "            const method = id ? 'PUT' : 'POST';" +
+                "" +
+                "            fetch(url, {" +
+                "                method: method," +
+                "                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }," +
+                "                body: formData" +
+                "            })" +
+                "            .then(response => response.json())" +
+                "            .then(data => {" +
+                "                showMessage(id ? 'Étudiant modifié avec succès' : 'Étudiant ajouté avec succès', 'success');"
+                +
+                "                resetForm();" +
+                "                loadStudents();" +
+                "            })" +
+                "            .catch(error => showMessage('Erreur: ' + error, 'error'));" +
+                "        });" +
+                "" +
+                "        loadStudents();" +
+                "    </script>" +
                 "</body>" +
                 "</html>";
     }
