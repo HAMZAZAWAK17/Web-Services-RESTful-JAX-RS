@@ -1,199 +1,57 @@
 <!DOCTYPE html>
-<html lang='fr'>
+<html>
 
 <head>
     <meta charset='UTF-8'>
-    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <title>Gestion des Étudiants</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: white;
-            padding: 30px;
-            border: 1px solid #ddd;
-        }
-
-        h1 {
-            color: #333;
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-
-        h2 {
-            color: #555;
-            font-size: 18px;
-            margin-top: 30px;
-            margin-bottom: 15px;
-        }
-
-        .nav-links {
-            margin-bottom: 20px;
-            padding: 15px;
-            background: #f8f9fa;
-            border: 1px solid #ddd;
-        }
-
-        .nav-links a {
-            display: inline-block;
-            padding: 8px 15px;
-            background: #007bff;
-            color: white;
-            text-decoration: none;
-            margin-right: 10px;
-        }
-
-        .nav-links a:hover {
-            background: #0056b3;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        th,
-        td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-        }
-
-        th {
-            background: #f0f0f0;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #333;
-        }
-
-        input {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            box-sizing: border-box;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            background: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-            margin-right: 5px;
-        }
-
-        .btn:hover {
-            background: #0056b3;
-        }
-
-        .btn-delete {
-            background: #dc3545;
-        }
-
-        .btn-delete:hover {
-            background: #c82333;
-        }
-
-        .btn-edit {
-            background: #28a745;
-        }
-
-        .btn-edit:hover {
-            background: #218838;
-        }
-
-        .btn-back {
-            background: #6c757d;
-            display: inline-block;
-            text-decoration: none;
-            margin-top: 20px;
-        }
-
-        .btn-back:hover {
-            background: #5a6268;
-        }
-
-        .message {
-            padding: 10px;
-            margin-bottom: 15px;
-            border-radius: 3px;
-        }
-
-        .success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-    </style>
 </head>
 
 <body>
-    <div class='container'>
-        <h1>Gestion des Étudiants</h1>
+    <h1>Gestion des Étudiants</h1>
 
-        <div class='nav-links'>
-            <a href='#liste'>📋 Liste</a>
-            <a href='#ajouter'>➕ Ajouter</a>
-        </div>
+    <p><a href="index.html">Retour à l'accueil</a></p>
 
-        <div id='message'></div>
+    <div id='message'></div>
 
-        <h2 id='liste'>Liste des Étudiants</h2>
-        <table id='studentsTable'>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Prénom</th>
-                    <th>Nom</th>
-                    <th>Date de Naissance</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id='studentsBody'>
-            </tbody>
-        </table>
+    <h2>Liste des Étudiants</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Prénom</th>
+                <th>Nom</th>
+                <th>Date de Naissance</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id='studentsBody'>
+        </tbody>
+    </table>
 
-        <h2 id='ajouter'><span id='formTitle'>Ajouter un Étudiant</span></h2>
-        <form id='studentForm'>
-            <input type='hidden' id='studentId' value=''>
-            <div class='form-group'>
-                <label>Prénom:</label>
-                <input type='text' id='firstName' required>
-            </div>
-            <div class='form-group'>
-                <label>Nom:</label>
-                <input type='text' id='lastName' required>
-            </div>
-            <div class='form-group'>
-                <label>Date de Naissance:</label>
-                <input type='date' id='birthDate' required>
-            </div>
-            <button type='submit' class='btn'>Enregistrer</button>
-            <button type='button' class='btn btn-back' onclick='resetForm()'>Annuler</button>
-        </form>
+    <h2 id='formTitle'>Ajouter un Étudiant</h2>
+    <form id='studentForm'>
+        <input type='hidden' id='studentId'>
 
-        <a href='index.html' class='btn btn-back'>← Retour à l'accueil</a>
-    </div>
+        <p>
+            <label>Prénom:</label><br>
+            <input type='text' id='firstName' required>
+        </p>
+
+        <p>
+            <label>Nom:</label><br>
+            <input type='text' id='lastName' required>
+        </p>
+
+        <p>
+            <label>Date de Naissance:</label><br>
+            <input type='date' id='birthDate' required>
+        </p>
+
+        <p>
+            <button type='submit'>Enregistrer</button>
+            <button type='button' onclick='resetForm()'>Annuler</button>
+        </p>
+    </form>
 
     <script>
         function loadStudents() {
@@ -210,21 +68,20 @@
                             <td>${student.lastName}</td>
                             <td>${student.birthDate}</td>
                             <td>
-                                <button class='btn btn-edit' onclick='editStudent(${student.idStudent})'>Modifier</button>
-                                <button class='btn btn-delete' onclick='deleteStudent(${student.idStudent})'>Supprimer</button>
+                                <button onclick='editStudent(${student.idStudent})'>Modifier</button>
+                                <button onclick='deleteStudent(${student.idStudent})'>Supprimer</button>
                             </td>
                         `;
                         tbody.appendChild(tr);
                     });
                 })
-                .catch(error => showMessage('Erreur lors du chargement: ' + error, 'error'));
+                .catch(error => showMessage('Erreur: ' + error));
         }
 
-        function showMessage(msg, type) {
+        function showMessage(msg) {
             const messageDiv = document.getElementById('message');
-            messageDiv.className = 'message ' + type;
             messageDiv.textContent = msg;
-            setTimeout(() => messageDiv.innerHTML = '', 3000);
+            setTimeout(() => messageDiv.textContent = '', 3000);
         }
 
         function resetForm() {
@@ -242,20 +99,19 @@
                     document.getElementById('lastName').value = student.lastName;
                     document.getElementById('birthDate').value = student.birthDate;
                     document.getElementById('formTitle').textContent = 'Modifier un Étudiant';
-                    window.location.hash = 'ajouter';
                 })
-                .catch(error => showMessage('Erreur: ' + error, 'error'));
+                .catch(error => showMessage('Erreur: ' + error));
         }
 
         function deleteStudent(id) {
-            if (confirm('Êtes-vous sûr de vouloir supprimer cet étudiant ?')) {
+            if (confirm('Supprimer cet étudiant ?')) {
                 fetch('students/' + id, { method: 'DELETE' })
                     .then(response => response.json())
                     .then(data => {
-                        showMessage('Étudiant supprimé avec succès', 'success');
+                        showMessage('Étudiant supprimé');
                         loadStudents();
                     })
-                    .catch(error => showMessage('Erreur: ' + error, 'error'));
+                    .catch(error => showMessage('Erreur: ' + error));
             }
         }
 
@@ -277,12 +133,11 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    showMessage(id ? 'Étudiant modifié avec succès' : 'Étudiant ajouté avec succès', 'success');
+                    showMessage(id ? 'Étudiant modifié' : 'Étudiant ajouté');
                     resetForm();
                     loadStudents();
-                    window.location.hash = 'liste';
                 })
-                .catch(error => showMessage('Erreur: ' + error, 'error'));
+                .catch(error => showMessage('Erreur: ' + error));
         });
 
         loadStudents();
