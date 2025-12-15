@@ -162,4 +162,38 @@ public class StudentController {
         }
     }
 
+    /**
+     * GET /students/html - Page HTML basique pour gérer les étudiants
+     */
+    @GET
+    @Path("/html")
+    @Produces(MediaType.TEXT_HTML)
+    public String getStudentsPage() {
+        return "<!DOCTYPE html><html><head><meta charset='UTF-8'><title>Gestion des Étudiants</title></head><body>" +
+                "<h1>Gestion des Étudiants</h1><p><a href='index.html'>Retour</a></p><div id='message'></div>" +
+                "<h2>Liste des Étudiants</h2><table border='1'><thead><tr><th>ID</th><th>Prénom</th><th>Nom</th><th>Date</th><th>Actions</th></tr></thead><tbody id='studentsBody'></tbody></table>"
+                +
+                "<h2 id='formTitle'>Ajouter un Étudiant</h2><form id='studentForm'><input type='hidden' id='studentId'>"
+                +
+                "<p><label>Prénom:</label><br><input type='text' id='firstName' required></p>" +
+                "<p><label>Nom:</label><br><input type='text' id='lastName' required></p>" +
+                "<p><label>Date de Naissance:</label><br><input type='date' id='birthDate' required></p>" +
+                "<p><button type='submit'>Enregistrer</button> <button type='button' onclick='resetForm()'>Annuler</button></p></form>"
+                +
+                "<script>" +
+                "function loadStudents(){fetch('students').then(r=>r.json()).then(students=>{const tbody=document.getElementById('studentsBody');tbody.innerHTML='';students.forEach(s=>{const tr=document.createElement('tr');tr.innerHTML=`<td>${s.idStudent}</td><td>${s.firstName}</td><td>${s.lastName}</td><td>${s.birthDate}</td><td><button onclick='editStudent(${s.idStudent})'>Modifier</button> <button onclick='deleteStudent(${s.idStudent})'>Supprimer</button></td>`;tbody.appendChild(tr);});}).catch(e=>showMessage('Erreur: '+e));}"
+                +
+                "function showMessage(msg){document.getElementById('message').textContent=msg;setTimeout(()=>document.getElementById('message').textContent='',3000);}"
+                +
+                "function resetForm(){document.getElementById('studentForm').reset();document.getElementById('studentId').value='';document.getElementById('formTitle').textContent='Ajouter un Étudiant';}"
+                +
+                "function editStudent(id){fetch('students/'+id).then(r=>r.json()).then(s=>{document.getElementById('studentId').value=s.idStudent;document.getElementById('firstName').value=s.firstName;document.getElementById('lastName').value=s.lastName;document.getElementById('birthDate').value=s.birthDate;document.getElementById('formTitle').textContent='Modifier un Étudiant';}).catch(e=>showMessage('Erreur: '+e));}"
+                +
+                "function deleteStudent(id){if(confirm('Supprimer?')){fetch('students/'+id,{method:'DELETE'}).then(r=>r.json()).then(()=>{showMessage('Supprimé');loadStudents();}).catch(e=>showMessage('Erreur: '+e));}}"
+                +
+                "document.getElementById('studentForm').addEventListener('submit',function(e){e.preventDefault();const id=document.getElementById('studentId').value;const formData=new URLSearchParams();formData.append('firstName',document.getElementById('firstName').value);formData.append('lastName',document.getElementById('lastName').value);formData.append('birthDate',document.getElementById('birthDate').value);const url=id?'students/'+id:'students';const method=id?'PUT':'POST';fetch(url,{method:method,headers:{'Content-Type':'application/x-www-form-urlencoded'},body:formData}).then(r=>r.json()).then(()=>{showMessage(id?'Modifié':'Ajouté');resetForm();loadStudents();}).catch(e=>showMessage('Erreur: '+e));});"
+                +
+                "loadStudents();" +
+                "</script></body></html>";
+    }
 }
