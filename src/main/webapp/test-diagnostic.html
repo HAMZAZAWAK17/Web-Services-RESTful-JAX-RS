@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnostic API - Liste Vide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+
+        .status.success {
+            background: #10b981;
+            color: white;
+        }
+
+        .status.error {
+            background: #ef4444;
+            color: white;
+        }
+
+        .status.warning {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .status.info {
+            background: #3b82f6;
+            color: white;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 5px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        pre {
+            background: #1e293b;
+            color: #10b981;
+            padding: 15px;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin: 10px 0;
+        }
+
+        .info-box {
+            background: #f0f9ff;
+            border-left: 4px solid #3b82f6;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        .error-box {
+            background: #fef2f2;
+            border-left: 4px solid #ef4444;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        .success-box {
+            background: #f0fdf4;
+            border-left: 4px solid #10b981;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #667eea;
+            font-size: 18px;
+        }
+
+        .emoji {
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🔍 Diagnostic API - Problème Liste Vide</h1>
+
+        <!-- Statut de l'API -->
+        <div class="card">
+            <h2><span class="emoji">📡</span>Statut de l'API</h2>
+            <div id="apiStatus">
+                <div class="loading">⏳ Vérification en cours...</div>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="card">
+            <h2><span class="emoji">🎮</span>Actions de Test</h2>
+            <button onclick="testConnection()">🔌 Tester la Connexion</button>
+            <button onclick="testGetAllStudents()">📋 GET /students</button>
+            <button onclick="testDebugEndpoint()">🧪 Test Debug Endpoint</button>
+            <button onclick="addTestStudent()">➕ Ajouter Étudiant Test</button>
+            <button onclick="location.reload()">🔄 Rafraîchir</button>
+        </div>
+
+        <!-- Résultats -->
+        <div class="card">
+            <h2><span class="emoji">📊</span>Résultats des Tests</h2>
+            <div id="results"></div>
+        </div>
+
+        <!-- Liste des Étudiants -->
+        <div class="card">
+            <h2><span class="emoji">👥</span>Liste des Étudiants</h2>
+            <div id="studentsList">
+                <div class="info-box">
+                    Cliquez sur "GET /students" pour charger la liste
+                </div>
+            </div>
+        </div>
+
+        <!-- Guide de Résolution -->
+        <div class="card">
+            <h2><span class="emoji">💡</span>Guide de Résolution</h2>
+            <div class="info-box">
+                <h3>Si la liste est vide, suivez ces étapes:</h3>
+                <ol style="margin-left: 20px; margin-top: 10px;">
+                    <li><strong>Vérifier MySQL:</strong> Assurez-vous que MySQL est démarré</li>
+                    <li><strong>Vérifier la base:</strong> Ouvrir MySQL Workbench et exécuter:
+                        <pre>USE DB_SDDI_ESTEM;
+SELECT COUNT(*) FROM STUDENTS;</pre>
+                    </li>
+                    <li><strong>Si COUNT = 0:</strong> Exécuter le fichier <code>fix_empty_list.sql</code></li>
+                    <li><strong>Redémarrer WildFly:</strong> Arrêter (Ctrl+C) et relancer</li>
+                    <li><strong>Tester à nouveau:</strong> Cliquer sur "GET /students"</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const baseURL = window.location.origin + window.location.pathname.replace('test-diagnostic.html', '');
+
+        // Fonction pour afficher les résultats
+        function showResult(title, content, type = 'info') {
+            const resultsDiv = document.getElementById('results');
+            const timestamp = new Date().toLocaleTimeString();
+            const boxClass = type === 'success' ? 'success-box' : type === 'error' ? 'error-box' : 'info-box';
+
+            resultsDiv.innerHTML = `
+                <div class="${boxClass}">
+                    <strong>[${timestamp}] ${title}</strong>
+                    <div style="margin-top: 10px;">${content}</div>
+                </div>
+            ` + resultsDiv.innerHTML;
+        }
+
+        // Test de connexion
+        async function testConnection() {
+            showResult('🔌 Test de Connexion', 'Tentative de connexion à l\'API...', 'info');
+
+            try {
+                const response = await fetch(baseURL + 'students/debug-test');
+                const data = await response.json();
+
+                if (response.ok) {
+                    showResult('✅ Connexion Réussie',
+                        `<pre>${JSON.stringify(data, null, 2)}</pre>
+                        <p>L'API répond correctement! Le problème vient probablement de la base de données.</p>`,
+                        'success');
+                } else {
+                    showResult('❌ Erreur de Connexion',
+                        `Status: ${response.status}<br>Message: ${JSON.stringify(data)}`,
+                        'error');
+                }
+            } catch (error) {
+                showResult('❌ Erreur Réseau',
+                    `Impossible de se connecter à l'API.<br>Erreur: ${error.message}<br><br>
+                    <strong>Vérifiez:</strong><br>
+                    - WildFly est démarré<br>
+                    - L'application est déployée<br>
+                    - L'URL est correcte: ${baseURL}`,
+                    'error');
+            }
+        }
+
+        // Test GET /students
+        async function testGetAllStudents() {
+            showResult('📋 GET /students', 'Récupération de la liste des étudiants...', 'info');
+
+            try {
+                const response = await fetch(baseURL + 'students');
+                const students = await response.json();
+
+                if (response.ok) {
+                    if (students.length === 0) {
+                        showResult('⚠️ Liste Vide',
+                            `L'API fonctionne mais retourne 0 étudiants.<br><br>
+                            <strong>Solution:</strong><br>
+                            1. Ouvrir MySQL Workbench<br>
+                            2. Exécuter le fichier <code>fix_empty_list.sql</code><br>
+                            3. Vérifier que 8 étudiants sont insérés<br>
+                            4. Retester`,
+                            'error');
+
+                        document.getElementById('studentsList').innerHTML =
+                            '<div class="error-box">❌ Aucun étudiant trouvé dans la base de données</div>';
+                    } else {
+                        showResult('✅ Étudiants Récupérés',
+                            `${students.length} étudiant(s) trouvé(s)!<br>
+                            <pre>${JSON.stringify(students, null, 2)}</pre>`,
+                            'success');
+
+                        displayStudents(students);
+                    }
+                } else {
+                    showResult('❌ Erreur API',
+                        `Status: ${response.status}<br>Message: ${JSON.stringify(students)}`,
+                        'error');
+                }
+            } catch (error) {
+                showResult('❌ Erreur', error.message, 'error');
+            }
+        }
+
+        // Test debug endpoint
+        async function testDebugEndpoint() {
+            showResult('🧪 Test Debug', 'Test de l\'endpoint de debug...', 'info');
+
+            try {
+                const response = await fetch(baseURL + 'students/debug-test');
+                const data = await response.json();
+
+                showResult('✅ Debug Endpoint',
+                    `<pre>${JSON.stringify(data, null, 2)}</pre>`,
+                    'success');
+            } catch (error) {
+                showResult('❌ Erreur Debug', error.message, 'error');
+            }
+        }
+
+        // Ajouter un étudiant de test
+        async function addTestStudent() {
+            showResult('➕ Ajout Étudiant', 'Ajout d\'un étudiant de test...', 'info');
+
+            const formData = new URLSearchParams();
+            formData.append('firstName', 'Test');
+            formData.append('lastName', 'DIAGNOSTIC');
+            formData.append('birthDate', '2000-01-01');
+
+            try {
+                const response = await fetch(baseURL + 'students', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showResult('✅ Étudiant Ajouté',
+                        `L'étudiant de test a été ajouté avec succès!<br>
+                        Cliquez sur "GET /students" pour voir la liste mise à jour.`,
+                        'success');
+                } else {
+                    showResult('❌ Erreur Ajout',
+                        `Status: ${response.status}<br>Message: ${JSON.stringify(data)}`,
+                        'error');
+                }
+            } catch (error) {
+                showResult('❌ Erreur', error.message, 'error');
+            }
+        }
+
+        // Afficher les étudiants dans un tableau
+        function displayStudents(students) {
+            const html = `
+                <div class="success-box">
+                    ✅ ${students.length} étudiant(s) trouvé(s)
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Prénom</th>
+                            <th>Nom</th>
+                            <th>Date de Naissance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${students.map(s => `
+                            <tr>
+                                <td>${s.idStudent}</td>
+                                <td>${s.firstName}</td>
+                                <td>${s.lastName}</td>
+                                <td>${s.birthDate}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+
+            document.getElementById('studentsList').innerHTML = html;
+        }
+
+        // Vérifier le statut au chargement
+        window.addEventListener('load', async () => {
+            const statusDiv = document.getElementById('apiStatus');
+
+            try {
+                const response = await fetch(baseURL + 'students/debug-test');
+
+                if (response.ok) {
+                    statusDiv.innerHTML = `
+                        <span class="status success">✅ API Accessible</span>
+                        <div class="success-box" style="margin-top: 10px;">
+                            <strong>URL de base:</strong> ${baseURL}<br>
+                            <strong>Endpoint test:</strong> ${baseURL}students/debug-test<br>
+                            <strong>Endpoint students:</strong> ${baseURL}students
+                        </div>
+                    `;
+                } else {
+                    statusDiv.innerHTML = `
+                        <span class="status error">❌ API Erreur ${response.status}</span>
+                        <div class="error-box" style="margin-top: 10px;">
+                            L'API est accessible mais retourne une erreur.
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `
+                    <span class="status error">❌ API Non Accessible</span>
+                    <div class="error-box" style="margin-top: 10px;">
+                        <strong>Erreur:</strong> ${error.message}<br><br>
+                        <strong>Vérifiez:</strong><br>
+                        - WildFly est démarré<br>
+                        - L'application est déployée<br>
+                        - L'URL est correcte
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+
+</html>
